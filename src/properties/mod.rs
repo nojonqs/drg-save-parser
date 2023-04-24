@@ -10,6 +10,7 @@ mod object_property;
 mod set_property;
 mod string_property;
 mod struct_property;
+mod name_property;
 
 use crate::utils::error::ParseError;
 use enum_dispatch::enum_dispatch;
@@ -28,6 +29,7 @@ use object_property::ObjectProperty;
 use set_property::SetProperty;
 use string_property::StringProperty;
 use struct_property::StructProperty;
+use name_property::NameProperty;
 
 #[enum_dispatch]
 trait PropertyTrait {}
@@ -48,6 +50,7 @@ pub enum Property {
   MapProperty,
   ObjectProperty,
   MulticastInlineDelegateProperty,
+  NameProperty,
 }
 
 impl Property {
@@ -64,6 +67,7 @@ impl Property {
       "MapProperty" => MapProperty::new(reader),
       "ObjectProperty" => ObjectProperty::new(reader),
       "MulticastInlineDelegateProperty" => MulticastInlineDelegateProperty::new(reader),
+      "NameProperty" => NameProperty::new(reader),
       _ => {
         return Err(ParseError::new(format!(
           "Unhandled property data type {}",
